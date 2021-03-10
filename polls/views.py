@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 
-from .models import Question, Choice
+from .models import Question, Choice, User
 
 
 class IndexView(generic.ListView):
@@ -31,6 +31,11 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+
+
+def home(request, user_id):
+    username = get_object_or_404(User, pk=user_id)
+    return HttpResponse("User is %s and Email is %s" % (username.username, username.email))
 
 
 def vote(request, question_id):
